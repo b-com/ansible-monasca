@@ -1,0 +1,22 @@
+[monasca_api]
+10.50.0.172 ansible_ssh_user=ubuntu
+
+[monasca_api:vars]
+monasca_api_host=10.50.0.172
+keystone_host=10.50.0.222
+
+[monasca_ui]
+10.50.0.172 ansible_ssh_user=ubuntu
+
+[monasca_agent]
+10.50.0.64 ansible_ssh_user=ubuntu
+#10.50.0.101 ansible_ssh_user=ubuntu
+#10.50.0.102 ansible_ssh_user=ubuntu
+#10.50.0.172 ansible_ssh_user=ubuntu
+#10.50.0.104 ansible_ssh_user=ubuntu
+#10.50.0.105 ansible_ssh_user=ubuntu
+#10.50.0.106 ansible_ssh_user=ubuntu
+
+[monasca_agent:vars]
+keystone_host=10.50.0.222
+

@@ -1,0 +1,122 @@
+---
+- hosts: monasca_api
+  sudo: yes
+  vars_files:
+    - ./common.yml
+
+  roles:
+    - role: ansible-zookeeper
+      zookeeper_hosts: 'localhost:2181'
+
+    - role: ansible-kafka
+      zookeeper_hosts: 'localhost:2181'
+
+    - role: ansible-influxdb
+      tags: ['influxdb']
+      zookeeper_hosts: "localhost:2181"
+      #influxdb_version: 0.9.0-rc33
+      influxdb: {raft_port: 8095, replication_factor: 1, seed_servers: [ ]}
+
+    - role: ansible-percona
+      mysql_root_password: "{{ mysql_root_password }}"
+
+    - role: ansible-monasca-schema
+      tags: ['influxdb']
+      zookeeper_hosts: "localhost:2181"
+      mysql_admin_password: "{{ mysql_root_password }}"
+      #influxdb_version: 0.9.0-rc33
+      influxdb_users: {"{{ influxdb_username }}": "{{ influxdb_password }}"}
+      influxdb_url: "http://localhost:8086"
+      mon_mysql_users:
+        - username: "{{ mysql_username }}"
+          password: "{{ mysql_password }}"
+      kafka_replicas: 1
+
+    - role: ansible-storm
+      storm_nimbus_enabled: true
+      storm_supervisor_enabled: true
+      nimbus_host: localhost
+      zookeeper_hosts: "localhost:2181"
+
+    - role: ansible-monasca-api
+      zookeeper_hosts: 'localhost:2181'
+      kafka_hosts: 'localhost:9092'
+      api_region: "{{ keystone_region }}"
+      influxdb_url: "http://localhost:8086"
+      influxdb_user: "{{ influxdb_username }}"
+      influxdb_password: "{{ influxdb_password }}"
+      keystone_host: "{{ keystone_host }}"
+      database_host: "localhost"
+      database_user: "{{ mysql_username }}"
+      database_password: "{{ mysql_password }}"
+      defaultAuthorizedRoles: ['admin']
+      agentAuthorizedRoles: ['admin']
+      keystone_admin: "{{ keystone_monasca_username }}"
+      keystone_admin_password: "{{ keystone_monasca_password }}"
+
+    - role: ansible-monasca-persister
+      zookeeper_hosts: "localhost:2181"
+      kafka_hosts: "localhost:9092"
+      influxdb_url: "http://localhost:8086"
+      influxdb_user: "{{ influxdb_username }}"
+      influxdb_password: "{{ influxdb_password }}"
+
+    - role: ansible-monasca-thresh
+      zookeeper_hosts: "localhost:2181"
+      kafka_hosts: "localhost:9092"
+      database_host: "localhost"
+      database_user: "{{ mysql_username }}"
+      database_password: "{{ mysql_password }}"
+
+    - role: ansible-monasca-notification
+      zookeeper_hosts: "localhost:2181"
+      kafka_hosts: "localhost:9092"
+      database_host: "localhost"
+      database_user: "{{ mysql_username }}"
+      database_password: "{{ mysql_password }}"
+      smtp_host: "localhost"
+
+    - role: ansible-monasca-keystone
+      keystone_url: "http://{{ keystone_host }}:35357/v2.0"
+      keystone_cacert_location: /var/tmp
+      keystone_users:
+        - username: "{{ keystone_monasca_username }}"
+          password: "{{ keystone_monasca_password }}"
+          project: "{{ keystone_monasca_project }}"
+          role: "{{ keystone_monasca_role }}"
+          monitoring_delegate: True
+      keystone_service_script: /usr/local/bin/create_monasca_service.py
+      monasca_api_url: "http://{{ monasca_api_host }}:8070/v2.0"
+      monasca_virtualenv_dir: /opt/monasca
+      skip_install: False
+      keystone_service_endpoints:
+        - { name: "monasca",
+            description: "Monasca monitoring service",
+            type: "monitoring",
+            url: "{{ monasca_api_url }}" }
+
+- hosts: monasca_agent
+  sudo: yes
+  vars_files:
+    - ./variables.yml
+  roles:
+    - role: ansible-monasca-agent
+      keystone_url: "http://{{ keystone_host }}:35357/v3"
+      monasca_agent_user: "{{ keystone_monasca_username }}"
+      monasca_agent_user_domain_id: "default"
+      monasca_agent_password: "{{ keystone_monasca_password }}"
+      monasca_agent_project: "{{ keystone_monasca_project }}"
+      monasca_agent_project_domain_id: "{{ keystone_monasca_project_domain_id }}"
+      monasca_agent_service: monasca
+      monasca_agent_dimensions: "service:monasca"
+
+
+
+- hosts: monasca_ui
+  sudo: yes
+  roles:
+    - role: ansible-monasca-ui
+      horizon_path: /var/tmp/horizon/
+      apache_document_root: "/var/www/html/"
+      grafana_base_dir: "/usr/share/grafana"
+      apache2_horizon_conf_file: "/etc/apache2/sites-available/horizon.conf"
