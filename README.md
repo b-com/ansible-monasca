@@ -62,7 +62,7 @@ keystone_host=crtl.openstack.b-com.com
 crtl.openstack.b-com.com ansible_ssh_user=ubuntu
 
 [monasca_agent]
-monasca-host1.b-com.com ansible_ssh_user=ubuntu
+monasca-host.b-com.com ansible_ssh_user=ubuntu
 crtl.openstack.b-com.com ansible_ssh_user=ubuntu
 compute1.openstack.b-com.com ansible_ssh_user=ubuntu
 compute2.openstack.b-com.com ansible_ssh_user=ubuntu
