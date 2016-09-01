@@ -20,7 +20,7 @@ This **monasca.yml** playbook references several Ansible roles which are not par
   | ansible-monasca-api           | https://github.com/b-com/ansible-monasca-api/archive/master.zip|
   | ansible-monasca-persister     | https://github.com/hpcloud-mon/ansible-monasca-persister/archive/master.zip|
   | ansible-monasca-thresh        | https://github.com/hpcloud-mon/ansible-monasca-thresh/archive/master.zip|
-  | ansible-monasca-notification  | https://github.com/hpcloud-mon/ansible-monasca-notification/archive/master.zip|
+  | ansible-monasca-notification  | https://github.com/b-com/ansible-monasca-notification/archive/master.zip|
   | ansible-monasca-agent         | https://github.com/b-com/ansible-monasca-agent/archive/master.zip|
   | ansible-monasca-kesytone      | https://github.com/b-com/ansible-monasca-keystone/archive/master.zip|
   | ansible-monasca-ui            | https://github.com/b-com/ansible-monasca-ui/archive/master.zip|
