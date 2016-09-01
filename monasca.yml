@@ -18,7 +18,6 @@
       influxdb: {raft_port: 8095, replication_factor: 1, seed_servers: [ ]}
 
     - role: ansible-percona
-      mysql_root_password: "{{ mysql_root_password }}"
 
     - role: ansible-monasca-schema
       tags: ['influxdb']
@@ -44,8 +43,6 @@
       api_region: "{{ keystone_region }}"
       influxdb_url: "http://localhost:8086"
       influxdb_user: "{{ influxdb_username }}"
-      influxdb_password: "{{ influxdb_password }}"
-      keystone_host: "{{ keystone_host }}"
       database_host: "localhost"
       database_user: "{{ mysql_username }}"
       database_password: "{{ mysql_password }}"
@@ -59,7 +56,6 @@
       kafka_hosts: "localhost:9092"
       influxdb_url: "http://localhost:8086"
       influxdb_user: "{{ influxdb_username }}"
-      influxdb_password: "{{ influxdb_password }}"
 
     - role: ansible-monasca-thresh
       zookeeper_hosts: "localhost:2181"
