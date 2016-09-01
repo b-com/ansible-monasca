@@ -1,2 +1,4 @@
 inventory
 common.yml
+roles/ansible*
+roles/master.zip
