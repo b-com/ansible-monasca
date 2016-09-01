@@ -14,6 +14,7 @@ This **monasca.yml** playbook references several Ansible roles which are not par
   | ansible-zookeeper             | https://github.com/hpcloud-mon/ansible-zookeeper/archive/master.zip|
   | ansible-kafka                 | https://github.com/b-com/ansible-kafka/archive/master.zip|
   | ansible-influxdb              | https://github.com/b-com/ansible-influxdb/archive/master.zip|
+  | ansible-percona               | https://github.com/hpcloud-mon/ansible-percona/archive/master.zip|
   | ansible-monasca-schema        | https://github.com/b-com/ansible-monasca-schema/archive/master.zip|
   | ansible-storm                 | https://github.com/hpcloud-mon/ansible-storm/archive/master.zip|
   | ansible-monasca-api           | https://github.com/b-com/ansible-monasca-api/archive/master.zip|
@@ -21,15 +22,13 @@ This **monasca.yml** playbook references several Ansible roles which are not par
   | ansible-monasca-thresh        | https://github.com/hpcloud-mon/ansible-monasca-thresh/archive/master.zip|
   | ansible-monasca-notification  | https://github.com/hpcloud-mon/ansible-monasca-notification/archive/master.zip|
   | ansible-monasca-agent         | https://github.com/b-com/ansible-monasca-agent/archive/master.zip|
-  | ansible-monasca-kesytone      | https://github.com/b-com/ansible-monasca-kesytone/archive/master.zip|
+  | ansible-monasca-kesytone      | https://github.com/b-com/ansible-monasca-keystone/archive/master.zip|
   | ansible-monasca-ui            | https://github.com/b-com/ansible-monasca-ui/archive/master.zip|
 
-  You can upload each Ansible role like this:
+  You can upload each Ansible role by running this command:
   ~~~~
   # cd ./roles
-  # wget <role_url> 
-  # unzip master.zip
-  # mv <role_name>-master <role_name>
+  # bash upload_roles.sh
   ~~~~
 
 
