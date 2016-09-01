@@ -98,7 +98,7 @@
 - hosts: monasca_agent
   sudo: yes
   vars_files:
-    - ./variables.yml
+    - ./common.yml
   roles:
     - role: ansible-monasca-agent
       keystone_url: "http://{{ keystone_host }}:35357/v3"
@@ -120,3 +120,4 @@
       apache_document_root: "/var/www/html/"
       grafana_base_dir: "/usr/share/grafana"
       apache2_horizon_conf_file: "/etc/apache2/sites-available/horizon.conf"
+
